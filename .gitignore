@@ -1,0 +1,4 @@
+*.o
+*.so*
+session.vim
+.ycm*
