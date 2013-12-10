@@ -2,3 +2,6 @@
 *.so*
 session.vim
 .ycm*
+*.dll
+*.exe
+squeezebox_exec

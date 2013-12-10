@@ -1,8 +1,11 @@
 #ifndef SQUEEZEBOX_ENTITY_MANAGER_HPP
 #define SQUEEZEBOX_ENTITY_MANAGER_HPP
 
+#include <iostream>
 #include <string>
 #include <vector>
+
+#include <Box2D/Box2D.h>
 
 #include "context.hpp"
 #include "module.hpp"

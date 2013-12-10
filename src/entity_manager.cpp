@@ -1,9 +1,11 @@
 #include "entity_manager.hpp"
 
+#include <iostream>
 #include <string>
 #include <vector>
 
 #include <GL/glew.h>
+#include <Box2D/Box2D.h>
 
 #include "context.hpp"
 #include "module.hpp"

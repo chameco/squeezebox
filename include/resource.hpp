@@ -1,9 +1,7 @@
 #ifndef SQUEEZEBOX_RESOURCE_HPP
 #define SQUEEZEBOX_RESOURCE_HPP
 
-#include <string>
-#include <vector>
-
+#include <SDL2/SDL.h>
 #include <GL/glew.h>
 
 #include "context.hpp"
@@ -11,20 +9,16 @@
 using namespace std;
 
 namespace squeezebox {
+	struct Vertex {
+		GLfloat x, y;
+		GLfloat s, t;
+	};
+
 	class Resource {
 		public:
-			Resource(string path);
-			~Resource();
+			static GLuint surface_to_texture(SDL_Surface *surface);
 
-			void draw(const Context &c, int x, int y);
-		private:
-			struct Vertex {
-				GLfloat x, y;
-				GLfloat s, t;
-			};
-			GLuint texture;
-			Vertex vertices[4];
-			GLuint vertex_handler;
+			virtual void draw(const Context &c, int x, int y) =0;
 	};
 }
 

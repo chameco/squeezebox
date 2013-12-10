@@ -1,28 +1,51 @@
 #ifndef SQUEEZEBOX_ENTITY_HPP
 #define SQUEEZEBOX_ENTITY_HPP
 
+#include <iostream>
 #include <string>
 
-#include "resource.hpp"
+#include "image_resource.hpp"
 #include "context.hpp"
-#include "aabb.hpp"
+#include "sound.hpp"
 
 using namespace std;
 
 namespace squeezebox {
-	class Entity : public AABB {
+	class Entity  {
 		public:
-			Entity(const Context &c, int x, int y, int w, int h, const string path) : AABB(x, y, w, h), resource(path) {}
+			Entity(const Context &c, int x, int y, int iw, int ih, const string path);
 
-			virtual void collide(const Entity &e) =0;
-			virtual void update() =0;
+			void collide(const Entity &e) {}
+			void update();
 
 			void draw(const Context &c, int delta);
-			void warp(int x, int y);
-			void set_velocity(int x_velocity, int y_velocity);
+
+			void impulse_x(int i);
+			void impulse_y(int i);
+
+			void set_x_velocity(int v);
+			void set_y_velocity(int v);
 		private:
-			int x_velocity, y_velocity;
-			Resource resource;
+			class EntityContactListener : public b2ContactListener {
+				public:
+					EntityContactListener(Entity *e) : entity(e) {}
+					void BeginContact(b2Contact *contact) {entity->sound.play();}
+					void EndContact(b2Contact *contact) {}
+					void PreSolve(b2Contact *contact, const b2Manifold *old_manifold) {}
+					void PostSolve(b2Contact *contact, const b2ContactImpulse *impulse) {}
+				private:
+					Entity *entity;
+			};
+			float w, h;
+			float xv, yv;
+			b2BodyDef body_def;
+			b2Body *body;
+			b2PolygonShape box;
+			b2FixtureDef fixture_def;
+			ImageResource resource;
+			EntityContactListener listener;
+		public:
+			Sound sound;
 	};
 }
 

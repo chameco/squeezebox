@@ -1,10 +1,9 @@
-CC = i486-mingw32-gcc
-OBJECTS = src/main.o src/resources.o src/game.o src/worldgen.o src/weapon.o src/level.o src/lights.o src/player.o src/entity.o src/ai.o src/utils.o src/projectile.o src/gui.o src/fx.o
+CXX = i486-mingw32-g++
+OBJECTS = src/reactor.o src/resource.o src/text_resource.o src/image_resource.o src/aabb.o src/module.o src/context.o src/world.o src/entity.o src/entity_manager.o src/gui_element.o src/gui_manager.o src/sound.o
 CFLAGS = -static -DGLEW_STATIC -Iinclude -g -Wall -I/usr/i486-mingw32/include -I/usr/local/include
+CXXFLAGS = -Iinclude -std=c++11 -g -Wall -Werror -I/usr/i486-mingw32/include -I/usr/local/include
 
-all: $(OBJECTS) worldgen
-	$(CC) $(OBJECTS) -L/usr/i486-mingw32/lib -L/usr/i486-mingw32/bin -L/usr/local/lib -lmingw32 -lglew32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lm -lcuttle -lopengl32 -lglu32 -o maildaemon.exe
-worldgen: src/make_world.o src/worldgen.o
-	$(CC) src/make_world.o src/worldgen.o -o make_world
+all: src/main.o $(OBJECTS)
+	$(CXX) src/main.o $(OBJECTS) -L/usr/i486-mingw32/lib -L/usr/i486-mingw32/bin -L/usr/local/lib -lmingw32 -lglew32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lBox2D -ljsoncpp -lm -lopengl32 -lglu32 -o squeezebox.exe
 clean:
 	rm src/*.o

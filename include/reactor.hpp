@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <functional>
 
 #include <SDL2/SDL.h>
@@ -16,7 +16,8 @@ using namespace std;
 namespace squeezebox {
 	class Reactor {
 		public:
-			Reactor(string name);
+			Reactor(const Context &c);
+			~Reactor();
 			Context &get_context() { return context; }
 			void add_module(Module *m);
 			void add_handler(int type, function<void(Reactor &, SDL_Event)>);
@@ -25,9 +26,9 @@ namespace squeezebox {
 			void stop();
 		private:
 			bool running;
-			int last_time, current_time;
+			int last_update_time, last_draw_time, current_time;
 			vector<Module *> modules;
-			map<int, function<void(Reactor &, SDL_Event)>> handlers;
+			unordered_map<int, function<void(Reactor &, SDL_Event)>> handlers;
 			Context context;
 	};
 }

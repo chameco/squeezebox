@@ -1,8 +1,9 @@
 #include "reactor.hpp"
 
 #include <string>
+#include <iostream>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <functional>
 
 #include <GL/glew.h>
@@ -14,9 +15,12 @@
 using namespace squeezebox;
 using namespace std;
 
-Reactor::Reactor(string name) : running(false), context(name) {
+Reactor::Reactor(const Context &c) : running(false), context(c) {
 	add_handler(SDL_QUIT, [](Reactor &r, SDL_Event e) { r.stop(); });
+	last_update_time = last_draw_time = current_time = 0;
 }
+
+Reactor::~Reactor() {}
 
 void Reactor::add_module(Module *m) {
 	modules.push_back(m);
@@ -32,6 +36,8 @@ void Reactor::remove_handler(int type) {
 
 void Reactor::run() {
 	running = true;
+	int delta = 10;
+	int accumulator = 0;
 	while (running) {
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
@@ -40,17 +46,24 @@ void Reactor::run() {
 			}
 		}
 
-		current_time = SDL_GetTicks();
-		if (current_time - last_time > 40) {
+		int new_time = SDL_GetTicks();
+		int frame_time = new_time - current_time;
+		current_time = new_time;
+
+		accumulator += frame_time;
+
+		while (accumulator >= delta) {
 			for (Module *m : modules) {
 				m->update(context);
 			}
+			context.update_physics(delta/1000.0f);
+			accumulator -= delta;
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		for (Module *m : modules) {
-			m->draw(context, current_time - last_time);
+			m->draw(context, current_time - last_draw_time);
 		}
 
 		context.update_screen();

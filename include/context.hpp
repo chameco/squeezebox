@@ -5,13 +5,14 @@
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
+#include <Box2D/Box2D.h>
 
 using namespace std;
 
 namespace squeezebox {
 	class Context {
 		public:
-			Context(const string name);
+			Context(const string name, float g);
 			~Context();
 
 			const GLuint get_standard_indices_handler() const { return standard_indices_handler; }
@@ -21,7 +22,10 @@ namespace squeezebox {
 			const void set_camera_x(int camera_x) { this->camera_x = camera_x; }
 			const int get_camera_y() const { return camera_y; }
 			const void set_camera_y(int camera_y) { this->camera_y = camera_y; }
+			
+			b2World *get_world() const { return world; }
 
+			void update_physics(double delta);
 			void update_screen();
 		private:
 			GLuint standard_indices[4];
@@ -29,7 +33,10 @@ namespace squeezebox {
 			SDL_Window *screen;
 			SDL_GLContext context;
 			int screen_width, screen_height;
-			int camera_x, camera_y;
+			int camera_x;
+			int camera_y;
+			b2Vec2 gravity;
+			b2World *world;
 	};
 }
 

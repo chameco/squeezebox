@@ -11,7 +11,9 @@
 using namespace squeezebox;
 using namespace std;
 
-Context::Context(const string name) : camera_x(0), camera_y(0) {
+Context::Context(const string name, float g) : camera_x(0), camera_y(0), gravity(0.0f, g) {
+	world = new b2World(gravity);
+
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		cerr << "Failed to initialize SDL" << endl;    
 	}
@@ -88,6 +90,10 @@ Context::Context(const string name) : camera_x(0), camera_y(0) {
 Context::~Context() {
 	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(screen);
+}
+
+void Context::update_physics(double delta) {
+	world->Step(delta, 8, 3);
 }
 
 void Context::update_screen() {
