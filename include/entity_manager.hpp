@@ -35,8 +35,6 @@ namespace squeezebox {
 						if (b != NULL) {
 							b->add_contact(a);
 						}
-						cout << "a: " << a << endl;
-						cout << "b: " << b << endl;
 					}
 					void EndContact(b2Contact *contact) {}
 					void PreSolve(b2Contact *contact, const b2Manifold *old_manifold) {}

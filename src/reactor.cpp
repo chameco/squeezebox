@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-#include <vector>
+#include <list>
 #include <unordered_map>
 #include <functional>
 
@@ -26,12 +26,20 @@ void Reactor::add_module(Module *m) {
 	modules.push_back(m);
 }
 
+void Reactor::remove_module(Module *m) {
+	m->destroy();
+}
+
 void Reactor::add_handler(int type, function<void(Reactor &, SDL_Event)> cb) {
 	handlers[type] = cb;
 }
 
 void Reactor::remove_handler(int type) {
 	handlers.erase(handlers.find(type));
+}
+
+static bool destroy_module_predicate(Module *m) {
+	return !m->is_alive();
 }
 
 void Reactor::run() {
@@ -53,6 +61,7 @@ void Reactor::run() {
 		accumulator += frame_time;
 
 		while (accumulator >= delta) {
+			modules.remove_if(destroy_module_predicate);
 			for (Module *m : modules) {
 				m->update(context);
 			}

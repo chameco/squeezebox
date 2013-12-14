@@ -13,12 +13,20 @@
 using namespace squeezebox;
 using namespace std;
 
-void GuiManager::operator()(Reactor &r, SDL_Event e) {
+void GuiManager::handler(Reactor &r, SDL_Event e) {
 	if (e.button.button == SDL_BUTTON_LEFT) {
 		left_click(e.button.x, e.button.y);
 	} else if (e.button.button == SDL_BUTTON_RIGHT) {
 		right_click(e.button.x, e.button.y);
 	}
+}
+
+static bool destroy_gui_element_predicate(GuiElement *e) {
+	return !e->is_alive();
+}
+
+void GuiManager::update(Context *c) {
+	all.remove_if(destroy_gui_element_predicate);
 }
 
 void GuiManager::draw(Context *c, int delta) {

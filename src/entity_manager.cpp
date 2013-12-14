@@ -31,26 +31,26 @@ EntityManager::EntityManager(Context *c, string path) {
 	const Json::Value entities = root.get("entities", 0);
 	if (entities.isArray()) {
 		for (unsigned int index = 0; index < entities.size(); ++index) {
-			int x, y, w, h;
+			int x, y, w, h, hp;
 			string path;
 			x = entities[index].get("x", 0).asInt();
 			y = entities[index].get("y", 0).asInt();
 			w = entities[index].get("w", 0).asInt();
 			h = entities[index].get("h", 0).asInt();
+			hp = entities[index].get("hp", 1).asInt();
 			path = entities[index].get("path", 0).asString();
-			add_entity(new Entity(c, x, y, w, h, path));
+			add_entity(new Entity(c, x, y, w, h, hp, path));
 		}
 	}
 	c->get_world()->SetContactListener(&listener);
 }
 
-class is_alive_predicate {
+class destroy_entity_predicate {
 	public:
-		is_alive_predicate(Context *con) : c(con) {}
+		destroy_entity_predicate(Context *con) : c(con) {}
 		bool operator()(Entity *e) {
 			if (!e->is_alive()) {
 				c->get_world()->DestroyBody(e->get_body());
-				delete e;
 				return true;
 			}
 			return false;
@@ -60,7 +60,7 @@ class is_alive_predicate {
 };
 
 void EntityManager::update(Context *c) {
-	all.remove_if(is_alive_predicate(c));
+	all.remove_if(destroy_entity_predicate(c));
 	for (Entity *e : all) {
 		e->update();
 	}

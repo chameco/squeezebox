@@ -2,7 +2,7 @@
 #define SQUEEZEBOX_REACTOR_HPP
 
 #include <string>
-#include <vector>
+#include <list>
 #include <unordered_map>
 #include <functional>
 
@@ -20,6 +20,7 @@ namespace squeezebox {
 			~Reactor();
 			Context *get_context() { return context; }
 			void add_module(Module *m);
+			void remove_module(Module *m);
 			void add_handler(int type, function<void(Reactor &, SDL_Event)>);
 			void remove_handler(int type);
 			void run();
@@ -27,7 +28,7 @@ namespace squeezebox {
 		private:
 			bool running;
 			int last_update_time, last_draw_time, current_time;
-			vector<Module *> modules;
+			list<Module *> modules;
 			unordered_map<int, function<void(Reactor &, SDL_Event)>> handlers;
 			Context *context;
 	};

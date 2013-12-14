@@ -2,7 +2,7 @@
 #define SQUEEZEBOX_GUI_MANAGER_HPP
 
 #include <string>
-#include <vector>
+#include <list>
 
 #include <SDL2/SDL.h>
 
@@ -18,16 +18,16 @@ namespace squeezebox {
 		public:
 			GuiManager() {}
 
-			void operator()(Reactor &r, SDL_Event e);
+			void handler(Reactor &r, SDL_Event e);
 
-			void update(Context *c) {}
+			void update(Context *c);
 			void draw(Context *c, int delta);
 
 			void add_gui_element(GuiElement *e);
 			void left_click(int x, int y);
 			void right_click(int x, int y);
 		private:
-			vector<GuiElement *> all;
+			list<GuiElement *> all;
 	};
 }
 

@@ -66,9 +66,16 @@ void ImageResource::generate_vertices(int w, int h) {
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 }
 
-void ImageResource::draw(Context *c, int x, int y) {
+void ImageResource::draw(Context *c, int x, int y, int rotation) {
 	glPushMatrix();
 	glTranslatef(x, y, 0);
+
+	if (rotation != 0) {
+		glTranslatef(vertices[2].x/2, vertices[2].y/2, 0);
+		glRotatef(rotation, 0, 0, -1);
+		glTranslatef(-vertices[2].x/2, -vertices[2].y/2, 0);
+
+	}
 
 	glColor3f(1.0, 1.0, 1.0);
 	glBindTexture(GL_TEXTURE_2D, texture);

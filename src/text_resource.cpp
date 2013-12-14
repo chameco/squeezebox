@@ -139,7 +139,7 @@ static int bitmap_index(char c)
 	return 51;
 }
 
-void TextResource::draw(Context *c, int x, int y) {
+void TextResource::draw(Context *c, int x, int y, int rotation) {
 	int len = text.length();
 	int bmpx = 0; int bmpy = 0;
 	int curx = x; int cury = y;

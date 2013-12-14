@@ -36,6 +36,9 @@ void World::load_geometry(Context *c, string path) {
 			w.y = geometry[index].get("y", 0).asDouble()/16.0;
 			w.w = geometry[index].get("w", 0).asDouble()/32.0;
 			w.h = geometry[index].get("h", 0).asDouble()/32.0;
+			w.r = geometry[index].get("r", 0).asDouble();
+			w.g = geometry[index].get("g", 0).asDouble();
+			w.b = geometry[index].get("b", 0).asDouble();
 			w.body_def.position.Set(w.x, w.y);
 			w.body = c->get_world()->CreateBody(&(w.body_def));
 			w.geometry.SetAsBox(w.w, w.h);
@@ -57,7 +60,7 @@ void World::draw(Context *c, int delta) {
 		glPushMatrix();
 
 		glTranslatef((e.x - e.w) * 16.0, (e.y - e.h) * 16.0, 0);
-		glColor3f(1.0, 0.0, 0.0);
+		glColor3f(e.r, e.g, e.b);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		glBegin(GL_QUADS);

@@ -22,6 +22,7 @@ namespace squeezebox {
 		private:
 			struct WorldElement {
 				double x, y, w, h;
+				int r, g, b;
 				b2BodyDef body_def;
 				b2Body *body;
 				b2PolygonShape geometry;

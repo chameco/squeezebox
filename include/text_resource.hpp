@@ -19,7 +19,7 @@ namespace squeezebox {
 			static GLuint glyph_handler;
 
 			TextResource(string t, double s);
-			void draw(Context *c, int x, int y);
+			void draw(Context *c, int x, int y, int rotation=0);
 		private:
 			string text;
 			double size;

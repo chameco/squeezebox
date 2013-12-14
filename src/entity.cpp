@@ -11,8 +11,8 @@
 using namespace squeezebox;
 using namespace std;
 
-Entity::Entity(Context *c, int x, int y, int iw, int ih, const string path)
-: w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), resource(path), alive(true) {
+Entity::Entity(Context *c, int x, int y, int iw, int ih, int hp, const string path)
+: w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), alive(true), hp(hp), resource(path) {
 	body_def.type = b2_dynamicBody;
 	body_def.position.Set(x/16.0f, y/16.0f);
 	body_def.fixedRotation = true;
@@ -39,17 +39,16 @@ void Entity::update() {
 	collide();
 }
 
-void Entity::destroy() {
-	alive = false;
-}
-
-bool Entity::is_alive() {
-	return alive;
-}
-
 void Entity::draw(Context *c, int delta) {
 	b2Vec2 position = body->GetPosition();
 	resource.draw(c, (position.x - w) * 16, (position.y - h) * 16);
+}
+
+void Entity::take_damage(int d) {
+	hp -= d;
+	if (hp <= 0) {
+		destroy();
+	}
 }
 
 void Entity::impulse_x(int i) {
