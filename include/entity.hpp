@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <list>
 
 #include "image_resource.hpp"
 #include "context.hpp"
@@ -13,29 +14,30 @@ using namespace std;
 namespace squeezebox {
 	class Entity  {
 		public:
-			Entity(const Context &c, int x, int y, int iw, int ih, const string path);
+			Entity(Context *c, int x, int y, int iw, int ih, const string path);
+			virtual ~Entity() {}
 
-			void collide(const Entity &e) {}
-			void update();
+			virtual void collide() {}
+			virtual void update();
+			
+			void destroy();
+			bool is_alive();
 
-			void draw(const Context &c, int delta);
+			void draw(Context *c, int delta);
+
+			int get_x() { return body->GetPosition().x * 16; }
+			int get_y() { return body->GetPosition().y * 16; }
+			b2Body *get_body() { return body; }
 
 			void impulse_x(int i);
 			void impulse_y(int i);
 
 			void set_x_velocity(int v);
 			void set_y_velocity(int v);
+
+			void add_contact(Entity *e);
+			void remove_contact(Entity *e);
 		private:
-			class EntityContactListener : public b2ContactListener {
-				public:
-					EntityContactListener(Entity *e) : entity(e) {}
-					void BeginContact(b2Contact *contact) {entity->sound.play();}
-					void EndContact(b2Contact *contact) {}
-					void PreSolve(b2Contact *contact, const b2Manifold *old_manifold) {}
-					void PostSolve(b2Contact *contact, const b2ContactImpulse *impulse) {}
-				private:
-					Entity *entity;
-			};
 			float w, h;
 			float xv, yv;
 			b2BodyDef body_def;
@@ -43,9 +45,9 @@ namespace squeezebox {
 			b2PolygonShape box;
 			b2FixtureDef fixture_def;
 			ImageResource resource;
-			EntityContactListener listener;
-		public:
-			Sound sound;
+			bool alive;
+		protected:
+			list<Entity *> contacts;
 	};
 }
 

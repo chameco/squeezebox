@@ -16,9 +16,9 @@ using namespace std;
 namespace squeezebox {
 	class Reactor {
 		public:
-			Reactor(const Context &c);
+			Reactor(Context *c);
 			~Reactor();
-			Context &get_context() { return context; }
+			Context *get_context() { return context; }
 			void add_module(Module *m);
 			void add_handler(int type, function<void(Reactor &, SDL_Event)>);
 			void remove_handler(int type);
@@ -29,7 +29,7 @@ namespace squeezebox {
 			int last_update_time, last_draw_time, current_time;
 			vector<Module *> modules;
 			unordered_map<int, function<void(Reactor &, SDL_Event)>> handlers;
-			Context context;
+			Context *context;
 	};
 }
 

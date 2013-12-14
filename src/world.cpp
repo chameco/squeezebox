@@ -17,11 +17,11 @@
 using namespace std;
 using namespace squeezebox;
 
-World::World(const Context &c, string path) {
+World::World(Context *c, string path) {
 	load_geometry(c, path);
 }
 
-void World::load_geometry(const Context &c, string path) {
+void World::load_geometry(Context *c, string path) {
 	Json::Value root;
 	Json::Reader reader;
 	fstream input;
@@ -37,7 +37,7 @@ void World::load_geometry(const Context &c, string path) {
 			w.w = geometry[index].get("w", 0).asDouble()/32.0;
 			w.h = geometry[index].get("h", 0).asDouble()/32.0;
 			w.body_def.position.Set(w.x, w.y);
-			w.body = c.get_world()->CreateBody(&(w.body_def));
+			w.body = c->get_world()->CreateBody(&(w.body_def));
 			w.geometry.SetAsBox(w.w, w.h);
 			w.body->CreateFixture(&w.geometry, 0.0);
 			elements.push_back(w);
@@ -45,11 +45,11 @@ void World::load_geometry(const Context &c, string path) {
 	}
 }
 
-void World::draw(const Context &c, int delta) {
+void World::draw(Context *c, int delta) {
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
-	glTranslatef(c.get_screen_width()/2 - c.get_camera_x(),
-			c.get_screen_height()/2 - c.get_camera_y(), 0);
+	glTranslatef(c->get_screen_width()/2 - c->get_camera_x(),
+			c->get_screen_height()/2 - c->get_camera_y(), 0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 

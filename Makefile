@@ -1,5 +1,5 @@
 CXX = g++
-OBJECTS = src/reactor.o src/resource.o src/image_resource.o src/text_resource.o src/aabb.o src/module.o src/context.o src/world.o src/entity.o src/entity_manager.o src/gui_element.o src/gui_manager.o src/sound.o
+OBJECTS = src/reactor.o src/resource.o src/image_resource.o src/text_resource.o src/music_manager.o src/aabb.o src/module.o src/context.o src/world.o src/entity.o src/projectile.o src/entity_manager.o src/gui_element.o src/gui_manager.o src/sound.o
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
 INSTALL_DATA = cp -r

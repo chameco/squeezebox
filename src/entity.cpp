@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <list>
 
 #include "image_resource.hpp"
 #include "context.hpp"
@@ -10,19 +11,18 @@
 using namespace squeezebox;
 using namespace std;
 
-Entity::Entity(const Context &c, int x, int y, int iw, int ih, const string path)
-: w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), resource(path), listener(this), sound("test.wav") {
+Entity::Entity(Context *c, int x, int y, int iw, int ih, const string path)
+: w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), resource(path), alive(true) {
 	body_def.type = b2_dynamicBody;
 	body_def.position.Set(x/16.0f, y/16.0f);
 	body_def.fixedRotation = true;
-	body = c.get_world()->CreateBody(&body_def);
+	body = c->get_world()->CreateBody(&body_def);
 	body->SetUserData((void *) this);
 	box.SetAsBox(w, h);
 	fixture_def.shape = &box;
 	fixture_def.density = 1.4f;
 	fixture_def.friction = 0.3f;
 	body->CreateFixture(&fixture_def);
-	c.get_world()->SetContactListener(&listener);
 }
 
 void Entity::update() {
@@ -36,9 +36,18 @@ void Entity::update() {
 		y_impulse = body->GetMass() * (yv/16.0f - vel.y);
 	}
 	body->ApplyLinearImpulse(b2Vec2(x_impulse, y_impulse), body->GetWorldCenter(), true);
+	collide();
 }
 
-void Entity::draw(const Context &c, int delta) {
+void Entity::destroy() {
+	alive = false;
+}
+
+bool Entity::is_alive() {
+	return alive;
+}
+
+void Entity::draw(Context *c, int delta) {
 	b2Vec2 position = body->GetPosition();
 	resource.draw(c, (position.x - w) * 16, (position.y - h) * 16);
 }
@@ -57,4 +66,12 @@ void Entity::set_x_velocity(int v) {
 
 void Entity::set_y_velocity(int v) {
 	yv = v;
+}
+
+void Entity::add_contact(Entity *e) {
+	contacts.push_back(e);
+}
+
+void Entity::remove_contact(Entity *e) {
+	contacts.remove(e);
 }

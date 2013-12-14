@@ -20,8 +20,8 @@ namespace squeezebox {
 
 			void operator()(Reactor &r, SDL_Event e);
 
-			void update(const Context &c) {}
-			void draw(const Context &c, int delta);
+			void update(Context *c) {}
+			void draw(Context *c, int delta);
 
 			void add_gui_element(GuiElement *e);
 			void left_click(int x, int y);

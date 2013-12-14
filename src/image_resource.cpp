@@ -11,7 +11,6 @@
 
 #include "context.hpp"
 #include "resource.hpp"
-
 using namespace squeezebox;
 using namespace std;
 
@@ -23,10 +22,9 @@ ImageResource::ImageResource(string path) : texture(0), vertex_handler(0) {
 		memcpy(vertices, cache[path]->vertices, sizeof(vertices));
 		vertex_handler = cache[path]->vertex_handler;
 	} else {
-		string true_path = "textures/" + path;
-		SDL_Surface *surface = IMG_Load(true_path.c_str());
+		SDL_Surface *surface = IMG_Load(path.c_str());
 		if (surface == NULL) {
-			cerr << "File " << true_path << " does not exist" << endl;
+			cerr << "File " << path << " does not exist" << endl;
 			exit(1);
 		}
 		texture = surface_to_texture(surface);
@@ -68,7 +66,7 @@ void ImageResource::generate_vertices(int w, int h) {
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 }
 
-void ImageResource::draw(const Context &c, int x, int y) {
+void ImageResource::draw(Context *c, int x, int y) {
 	glPushMatrix();
 	glTranslatef(x, y, 0);
 
@@ -82,7 +80,7 @@ void ImageResource::draw(const Context &c, int x, int y) {
 	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (GLvoid*)(sizeof(GLfloat)*2));
 	glVertexPointer(2, GL_FLOAT, sizeof(Vertex), (GLvoid*)0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, c.get_standard_indices_handler());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, c->get_standard_indices_handler());
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, NULL);
 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);

@@ -14,11 +14,11 @@ namespace squeezebox {
 
 	class World : public Module {
 		public:
-			World(const Context &c, string path);
-			void load_geometry(const Context &c, string path);
+			World(Context *c, string path);
+			void load_geometry(Context *c, string path);
 
-			void update(const Context &c) {}
-			void draw(const Context &c, int delta);
+			void update(Context *c) {}
+			void draw(Context *c, int delta);
 		private:
 			struct WorldElement {
 				double x, y, w, h;

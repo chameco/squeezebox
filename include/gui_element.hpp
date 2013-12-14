@@ -12,12 +12,12 @@ using namespace std;
 namespace squeezebox {
 	class GuiElement : public AABB {
 		public:
-			GuiElement(const Context &c, int x, int y, int w, int h, Resource *r) : AABB(x, y, w, h), resource(r) {}
+			GuiElement(Context *c, int x, int y, int w, int h, Resource *r) : AABB(x, y, w, h), resource(r) {}
 
 			virtual void on_left_click() {}
 			virtual void on_right_click() {}
 
-			void draw(const Context &c, int delta);
+			void draw(Context *c, int delta);
 		private:
 			Resource *resource;
 	};

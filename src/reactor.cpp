@@ -15,7 +15,7 @@
 using namespace squeezebox;
 using namespace std;
 
-Reactor::Reactor(const Context &c) : running(false), context(c) {
+Reactor::Reactor(Context *c) : running(false), context(c) {
 	add_handler(SDL_QUIT, [](Reactor &r, SDL_Event e) { r.stop(); });
 	last_update_time = last_draw_time = current_time = 0;
 }
@@ -56,7 +56,7 @@ void Reactor::run() {
 			for (Module *m : modules) {
 				m->update(context);
 			}
-			context.update_physics(delta/1000.0f);
+			context->update_physics(delta/1000.0f);
 			accumulator -= delta;
 		}
 
@@ -66,7 +66,7 @@ void Reactor::run() {
 			m->draw(context, current_time - last_draw_time);
 		}
 
-		context.update_screen();
+		context->update_screen();
 	}
 }
 

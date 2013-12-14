@@ -21,7 +21,7 @@ namespace squeezebox {
 			ImageResource(string path);
 			~ImageResource();
 
-			void draw(const Context &c, int x, int y);
+			void draw(Context *c, int x, int y);
 		private:
 			void generate_vertices(int w, int h);
 			GLuint texture;

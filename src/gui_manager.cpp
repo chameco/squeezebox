@@ -21,7 +21,7 @@ void GuiManager::operator()(Reactor &r, SDL_Event e) {
 	}
 }
 
-void GuiManager::draw(const Context &c, int delta) {
+void GuiManager::draw(Context *c, int delta) {
 	for (GuiElement *e : all) {
 		e->draw(c, delta);
 	}

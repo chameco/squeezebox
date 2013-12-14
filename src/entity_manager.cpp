@@ -2,10 +2,17 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <vector>
 
 #include <GL/glew.h>
 #include <Box2D/Box2D.h>
+
+#ifdef _WIN32
+ #include <jsoncpp/json.h>
+#else
+ #include <jsoncpp/json/json.h>
+#endif
 
 #include "context.hpp"
 #include "module.hpp"
@@ -14,17 +21,56 @@
 using namespace squeezebox;
 using namespace std;
 
-void EntityManager::update(const Context &c) {
+EntityManager::EntityManager(Context *c, string path) {
+	Json::Value root;
+	Json::Reader reader;
+	fstream input;
+	input.open(path);
+	input >> root;
+	input.close();
+	const Json::Value entities = root.get("entities", 0);
+	if (entities.isArray()) {
+		for (unsigned int index = 0; index < entities.size(); ++index) {
+			int x, y, w, h;
+			string path;
+			x = entities[index].get("x", 0).asInt();
+			y = entities[index].get("y", 0).asInt();
+			w = entities[index].get("w", 0).asInt();
+			h = entities[index].get("h", 0).asInt();
+			path = entities[index].get("path", 0).asString();
+			add_entity(new Entity(c, x, y, w, h, path));
+		}
+	}
+	c->get_world()->SetContactListener(&listener);
+}
+
+class is_alive_predicate {
+	public:
+		is_alive_predicate(Context *con) : c(con) {}
+		bool operator()(Entity *e) {
+			if (!e->is_alive()) {
+				c->get_world()->DestroyBody(e->get_body());
+				delete e;
+				return true;
+			}
+			return false;
+		}
+	private:
+		Context *c;
+};
+
+void EntityManager::update(Context *c) {
+	all.remove_if(is_alive_predicate(c));
 	for (Entity *e : all) {
 		e->update();
 	}
 }
 
-void EntityManager::draw(const Context &c, int delta) {
+void EntityManager::draw(Context *c, int delta) {
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
-	glTranslatef(c.get_screen_width()/2 - c.get_camera_x(),
-			c.get_screen_height()/2 - c.get_camera_y(), 0);
+	glTranslatef(c->get_screen_width()/2 - c->get_camera_x(),
+			c->get_screen_height()/2 - c->get_camera_y(), 0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 

@@ -19,9 +19,9 @@ namespace squeezebox {
 			const int get_screen_width() const { return screen_width; }
 			const int get_screen_height() const { return screen_height; }
 			const int get_camera_x() const { return camera_x; }
-			const void set_camera_x(int camera_x) { this->camera_x = camera_x; }
+			void set_camera_x(int cx) { camera_x = cx; }
 			const int get_camera_y() const { return camera_y; }
-			const void set_camera_y(int camera_y) { this->camera_y = camera_y; }
+			void set_camera_y(int cy) { camera_y = cy; }
 			
 			b2World *get_world() const { return world; }
 
