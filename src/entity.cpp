@@ -11,8 +11,8 @@
 using namespace squeezebox;
 using namespace std;
 
-Entity::Entity(Context *c, int x, int y, int iw, int ih, int hp, const string path)
-: w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), alive(true), hp(hp), resource(path) {
+Entity::Entity(Context *c, int x, int y, int iw, int ih, int hp, Resource *r)
+: w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), alive(true), hp(hp), resource(r) {
 	body_def.type = b2_dynamicBody;
 	body_def.position.Set(x/16.0f, y/16.0f);
 	body_def.fixedRotation = true;
@@ -23,6 +23,10 @@ Entity::Entity(Context *c, int x, int y, int iw, int ih, int hp, const string pa
 	fixture_def.density = 1.4f;
 	fixture_def.friction = 0.3f;
 	body->CreateFixture(&fixture_def);
+}
+
+Entity::~Entity() {
+	delete resource;
 }
 
 void Entity::update() {
@@ -41,7 +45,7 @@ void Entity::update() {
 
 void Entity::draw(Context *c, int delta) {
 	b2Vec2 position = body->GetPosition();
-	resource.draw(c, (position.x - w) * 16, (position.y - h) * 16);
+	resource->draw(c, (position.x - w) * 16, (position.y - h) * 16);
 }
 
 void Entity::take_damage(int d) {

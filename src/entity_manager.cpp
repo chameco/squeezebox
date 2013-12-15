@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <functional>
 
 #include <GL/glew.h>
 #include <Box2D/Box2D.h>
@@ -21,7 +22,15 @@
 using namespace squeezebox;
 using namespace std;
 
-EntityManager::EntityManager(Context *c, string path) {
+EntityManager::EntityManager(Context *c) {
+	c->get_world()->SetContactListener(&listener);
+}
+
+void EntityManager::load_entities(Context *c, string path) {
+	load_entities(c, [] (Context *c, int x, int y, int iw, int ih, int hp, string path) { return new Entity(c, x, y, iw, ih, hp, new ImageResource(path)); }, path);
+}
+
+void EntityManager::load_entities(Context *c, function<Entity *(Context *, int, int, int, int, int, string)> alloc, string path) {
 	Json::Value root;
 	Json::Reader reader;
 	fstream input;
@@ -39,10 +48,19 @@ EntityManager::EntityManager(Context *c, string path) {
 			h = entities[index].get("h", 0).asInt();
 			hp = entities[index].get("hp", 1).asInt();
 			path = entities[index].get("path", 0).asString();
-			add_entity(new Entity(c, x, y, w, h, hp, path));
+			Entity *e = alloc(c, x, y, w, h, hp, path);
+			e->get_body()->SetGravityScale(entities[index].get("gravity", 1).asDouble());
+			add_entity(e);
 		}
 	}
-	c->get_world()->SetContactListener(&listener);
+}
+
+void EntityManager::reset_entities(Context *c) {
+	for (Entity *e : all) {
+		c->get_world()->DestroyBody(e->get_body());
+		delete e;
+	}
+	all.clear();
 }
 
 class destroy_entity_predicate {
@@ -51,6 +69,7 @@ class destroy_entity_predicate {
 		bool operator()(Entity *e) {
 			if (!e->is_alive()) {
 				c->get_world()->DestroyBody(e->get_body());
+				//delete e;
 				return true;
 			}
 			return false;

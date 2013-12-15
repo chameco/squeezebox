@@ -14,15 +14,16 @@ using namespace std;
 namespace squeezebox {
 	class Entity  {
 		public:
-			Entity(Context *c, int x, int y, int iw, int ih, int hp, const string path);
-			virtual ~Entity() {}
+			Entity(int iw, int ih, int hp, Resource *r) : w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), alive(true), hp(hp), resource(r) {}
+			Entity(Context *c, int x, int y, int iw, int ih, int hp, Resource *r);
+			virtual ~Entity();
 
 			virtual void collide() {}
 			virtual void update();
 
 			virtual void draw(Context *c, int delta);
 
-			void take_damage(int d);
+			virtual void take_damage(int d);
 			
 			virtual void destroy() { alive = false; }
 			bool is_alive() { return alive; }
@@ -43,17 +44,16 @@ namespace squeezebox {
 
 			void add_contact(Entity *e);
 			void remove_contact(Entity *e);
-		private:
+		protected:
 			float w, h;
 			float xv, yv;
+			bool alive;
+			int hp;
 			b2BodyDef body_def;
 			b2Body *body;
 			b2PolygonShape box;
 			b2FixtureDef fixture_def;
-			bool alive;
-			int hp;
-		protected:
-			ImageResource resource;
+			Resource *resource;
 			list<Entity *> contacts;
 	};
 }

@@ -9,7 +9,7 @@
 using namespace squeezebox;
 using namespace std;
 
-Projectile::Projectile(Context *c, int x, int y, int iw, int ih, int xv, int yv, int strength, string path) : Entity(c, x, y, iw, ih, 1, path),
+Projectile::Projectile(Context *c, int x, int y, int iw, int ih, int xv, int yv, int strength, Resource *r) : Entity(c, x, y, iw, ih, 1, r),
 lifespan(256), strength(strength) {
 	set_x_velocity(xv);
 	set_y_velocity(yv);
@@ -27,7 +27,9 @@ void Projectile::update() {
 void Projectile::collide() {
 	for (Entity *e : contacts) {
 		if (e != NULL) {
-			e->take_damage(strength);
+			if (e->is_alive()) {
+				e->take_damage(strength);
+			}
 		}
 		lifespan = 0;
 	}

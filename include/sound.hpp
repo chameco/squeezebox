@@ -14,8 +14,11 @@ namespace squeezebox {
 			Sound(string path);
 
 			void play();
+			void loop();
+			void halt();
 		private:
 			Mix_Chunk *sound;
+			int channel;
 	};
 }
 

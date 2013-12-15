@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include <functional>
 
 #include <Box2D/Box2D.h>
 
@@ -15,8 +16,11 @@ using namespace std;
 namespace squeezebox {
 	class EntityManager : public Module {
 		public:
-			EntityManager() {}
-			EntityManager(Context *c, string path);
+			EntityManager(Context *c);
+
+			void load_entities(Context *c, string path);
+			void load_entities(Context *c, function<Entity *(Context *, int, int, int, int, int, string)> alloc, string path);
+			void reset_entities(Context *c);
 
 			void update(Context *c);
 			void draw(Context *c, int delta);
