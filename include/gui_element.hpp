@@ -20,6 +20,8 @@ namespace squeezebox {
 			virtual void on_left_click() {}
 			virtual void on_right_click() {}
 
+			Resource *get_resource() { return resource; }
+
 			void draw(Context *c, int delta);
 		private:
 			Resource *resource;

@@ -31,18 +31,28 @@ class WeaponPort {
 EntityManager *ENTITY_MANAGER;
 GuiManager *GUI_MANAGER;
 GuiElement *TITLE;
+GuiElement *YOGO;
 GuiElement *GAME_OVER;
+GuiElement *WAVES_CLEARED;
 GuiElement *BUTTON_ENTER;
+GuiElement *CHARGES;
+GuiElement *TELEPORTS[3];
+int TELEPORT_INDEX = 2;
+GuiElement *TIME_TEXT;
+GuiElement *TIME_NUMBER;
 
 Sound *GREEN_FIRE;
 Sound *YELLOW_FIRE;
 Sound *RED_FIRE;
 Sound *BLUE_FIRE;
 Sound *BLIP;
+Sound *BLOOP;
 Sound *SUCCESS[2];
 
 int NUM_SHIPS = 0;
 bool FLAG_SWITCH = false;
+int TIME = 20000;
+int WAVE = 0;
 
 void game_over();
 void switch_wave();
@@ -83,8 +93,7 @@ class PlayerShip : public Entity {
 			}
 		}
 
-		int get_velocity() { return velocity; }
-
+		int get_velocity() { return velocity; } 
 		void rotate_clockwise() {
 			weapons[0]->stop();
 			weapons[1]->stop();
@@ -135,6 +144,12 @@ class PlayerShip : public Entity {
 class Switcher : public Module {
 	public:
 		void update(Context *c) {
+			TIME -= 1;
+			string time = to_string(TIME);
+			((TextResource *) TIME_NUMBER->get_resource())->set_text(time);
+			if (TIME <= 0) {
+				game_over();
+			}
 			if (FLAG_SWITCH) {
 				switch_wave();
 				FLAG_SWITCH = 0;
@@ -143,9 +158,11 @@ class Switcher : public Module {
 		void draw(Context *c, int delta) {}
 };
 
+Switcher *SWITCHER;
+
 class EnemyShip : public Entity {
 	public:
-		EnemyShip(Context *c, int x, int y, string t) : Entity(32, 32, 16, new ImageResource("textures/enemy_" + t + ".png")), type(t) {
+		EnemyShip(Context *c, int x, int y, string t) : Entity(32, 32, t == "blue" ? 100 : 16, new ImageResource("textures/enemy_" + t + ".png")), type(t) {
 			body_def.type = b2_kinematicBody;
 			body_def.position.Set(x/16.0f, y/16.0f);
 			body_def.fixedRotation = true;
@@ -178,6 +195,9 @@ class ProjectileGreen : public Projectile {
 			for (Entity *e : contacts) {
 				if (e != NULL) {
 					if (EnemyShip *es = dynamic_cast<EnemyShip *>(e)) {
+						if (es->type == "red") {
+							TIME -= 100;
+						}
 						if (es->type != "green") {
 							lifespan = 0;
 							continue;
@@ -187,6 +207,7 @@ class ProjectileGreen : public Projectile {
 						e->take_damage(strength);
 					}
 				}
+				lifespan = 0;
 			}
 		}
 		class Port : public WeaponPort {
@@ -212,7 +233,7 @@ class ProjectileGreen : public Projectile {
 
 class ProjectileYellow : public Projectile {
 	public:
-		ProjectileYellow(Context *c, int x, int y, int xv, int yv) : Projectile(c, x, y, 8, 8, xv, yv, 2, new ImageResource("textures/bullet_yellow.png")) {
+		ProjectileYellow(Context *c, int x, int y, int xv, int yv) : Projectile(c, x, y, 8, 8, xv, yv, 4, new ImageResource("textures/bullet_yellow.png")) {
 			YELLOW_FIRE->play();
 		}
 		void collide() {
@@ -223,9 +244,24 @@ class ProjectileYellow : public Projectile {
 							lifespan = 0;
 							continue;
 						} else if (es->type == "yellow") {
-							lifespan = 0;
+							int r = rand() % 4;
+							switch (r) {
+								case 0:
+									ENTITY_MANAGER->add_entity(new ProjectileGreen(c, es->get_x() - 40, es->get_y(), -512, 0));
+									break;
+								case 1:
+									ENTITY_MANAGER->add_entity(new ProjectileGreen(c, es->get_x() + 40, es->get_y(), 512, 0));
+									break;
+								case 2:
+									ENTITY_MANAGER->add_entity(new ProjectileGreen(c, es->get_x(), es->get_y() - 40, 0, -512));
+									break;
+								case 3:
+									ENTITY_MANAGER->add_entity(new ProjectileGreen(c, es->get_x(), es->get_y() + 40, 0, 512));
+									break;
+							}
 						}
 					}
+					lifespan = 0;
 					if (e->is_alive()) {
 						e->take_damage(strength);
 					}
@@ -277,14 +313,13 @@ class ProjectileRed : public Projectile {
 						if (es->type == "green") {
 							lifespan = 0;
 							continue;
-						} else if (es->type == "yellow") {
-							lifespan = 0;
 						}
 					}
 					if (e->is_alive()) {
 						e->take_damage(strength);
 					}
 				}
+				lifespan = 0;
 			}
 		}
 		class Port : public WeaponPort {
@@ -334,7 +369,7 @@ class ProjectileRed : public Projectile {
 
 class ProjectileBlue : public Projectile {
 	public:
-		ProjectileBlue(Context *c, int x, int y, int xv, int yv) : Projectile(c, x, y, 32, 32, xv, yv, 16, new ImageResource("textures/bullet_blue.png")) {
+		ProjectileBlue(Context *c, int x, int y, int xv, int yv) : Projectile(c, x, y, 32, 32, xv, yv, 100, new ImageResource("textures/bullet_blue.png")) {
 			BLUE_FIRE->play();
 		}
 		void collide() {
@@ -344,14 +379,13 @@ class ProjectileBlue : public Projectile {
 						if (es->type == "green") {
 							lifespan = 0;
 							continue;
-						} else if (es->type == "yellow") {
-							lifespan = 0;
 						}
 					}
 					if (e->is_alive()) {
 						e->take_damage(strength);
 					}
 				}
+				lifespan = 0;
 			}
 		}
 		void draw(Context *c, int delta) {
@@ -433,7 +467,14 @@ void main_key_handler(Reactor &r, SDL_Event e) {
 				PLAYER->release(3);
 			}
 			break;
-		case SDLK_v:
+		case SDLK_x:
+			if (e.type == SDL_KEYDOWN) {
+				if (TELEPORT_INDEX >= 0) {
+					BLOOP->play();
+					PLAYER->warp(16, 200);
+					TELEPORTS[TELEPORT_INDEX--]->destroy();
+				}
+			}
 			break;
 	}
 }
@@ -447,6 +488,8 @@ void switch_wave() {
 		PLAYER->weapons[2]->stop();
 		PLAYER->weapons[3]->stop();
 		SUCCESS[rand() % 2]->play();
+		TIME += 10000 > TIME ? TIME : 10000;
+		WAVE += 1;
 	}
 	PLAYER = new PlayerShip(c, 16, 200);
 	PLAYER->weapons[0] = new ProjectileGreen::Port();
@@ -457,8 +500,8 @@ void switch_wave() {
 
 	string colors[5] = {"white", "green", "yellow", "red", "blue"};
 	
-	for (int x = -40; x < 40; x += 40) {
-		for (int y = -40; y < -20; y += 40) {
+	for (int x = -400; x < 400; x += 40) {
+		for (int y = -400; y < -200; y += 40) {
 			ENTITY_MANAGER->add_entity(new EnemyShip(c, x, y, colors[rand() % 5]));
 		}
 	}
@@ -470,25 +513,47 @@ void start_main_game() {
 
 	r->add_module(ENTITY_MANAGER);
 
-	r->add_module(new Switcher());
+	CHARGES = new GuiElement(c, 0, 0, (16 * 20), 16, new TextResource("Teleports Remaining:", 2));
+	GUI_MANAGER->add_gui_element(CHARGES);
+	TELEPORTS[0] = new GuiElement(c, (16 * 20), 0, 16, 16, new ImageResource("textures/battery.png"));
+	GUI_MANAGER->add_gui_element(TELEPORTS[0]);
+	TELEPORTS[1] = new GuiElement(c, (16 * 20) + 20, 0, 16, 16, new ImageResource("textures/battery.png"));
+	GUI_MANAGER->add_gui_element(TELEPORTS[1]);
+	TELEPORTS[2] = new GuiElement(c, (16 * 20) + 40, 0, 16, 16, new ImageResource("textures/battery.png"));
+	GUI_MANAGER->add_gui_element(TELEPORTS[2]);
+
+	TIME_TEXT = new GuiElement(c, 0, 32, (16 * 15), 16, new TextResource("Time Remaining:", 2));
+	GUI_MANAGER->add_gui_element(TIME_TEXT);
+
+	TIME_NUMBER = new GuiElement(c, (16 * 15), 32, 16, 16, new TextResource("0", 2));
+	GUI_MANAGER->add_gui_element(TIME_NUMBER);
+
+	SWITCHER = new Switcher();
+	r->add_module(SWITCHER);
 	r->add_handler(SDL_KEYDOWN, main_key_handler);
 	r->add_handler(SDL_KEYUP, main_key_handler);
 }
 
 void game_over() {
 	r->remove_module(ENTITY_MANAGER);
+	r->remove_module(SWITCHER);
 	r->remove_handler(SDL_KEYDOWN);
 	r->remove_handler(SDL_KEYUP);
 
 	GAME_OVER = new GuiElement(c, c->get_screen_width()/2 - (9 * 32), c->get_screen_height()/2 - 32, 8, 8, new TextResource("Game Over", 8));
 	GUI_MANAGER->add_gui_element(GAME_OVER);
+
+	string waves = "You defeated " + to_string(WAVE) + " waves";
+	WAVES_CLEARED = new GuiElement(c, c->get_screen_width()/2 - (waves.length() * 16), c->get_screen_height()/2 + 96, 8, 8, new TextResource(waves, 4));
+	GUI_MANAGER->add_gui_element(WAVES_CLEARED);
 }
 
 class GuiElementButton : public GuiElement {
 	public:
-		GuiElementButton(Context *c, int x, int y, int w, int h, string path) : GuiElement(c, x, y, w, h, new ImageResource(path)) {}
+		GuiElementButton(Context *c, int x, int y, int w, int h, Resource *r) : GuiElement(c, x, y, w, h, r) {}
 		void on_left_click() {
 			TITLE->destroy();
+			YOGO->destroy();
 			destroy();
 			start_main_game();
 		}
@@ -496,7 +561,7 @@ class GuiElementButton : public GuiElement {
 
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
-	c = new Context("One Direction", 30.0);
+	c = new Context("Midnight Memories", 30.0);
 	r = new Reactor(c);
 
 	GREEN_FIRE = new Sound("sounds/green_fire.wav");
@@ -504,18 +569,21 @@ int main(int argc, char *argv[]) {
 	RED_FIRE = new Sound("sounds/red_fire.wav");
 	BLUE_FIRE = new Sound("sounds/green_fire.wav");
 	BLIP = new Sound("sounds/blip.wav");
+	BLOOP = new Sound("sounds/bloop.wav");
 	SUCCESS[0] = new Sound("sounds/success.wav");
 	SUCCESS[1] = new Sound("sounds/victory.wav");
 
 	GUI_MANAGER = new GuiManager();
 
-	TITLE = new GuiElement(c, c->get_screen_width()/2 - (13 * 32), c->get_screen_height()/2 - 32, 8, 8, new TextResource("One Direction", 8));
+	TITLE = new GuiElement(c, c->get_screen_width()/2 - (17 * 32), c->get_screen_height()/2 - 32, 8, 8, new TextResource("Midnight Memories", 8));
 	GUI_MANAGER->add_gui_element(TITLE);
+	YOGO = new GuiElement(c, c->get_screen_width()/2 - (28 * 16), c->get_screen_height()/2 + 40, 8, 8, new TextResource("You only get one (direction)", 4));
+	GUI_MANAGER->add_gui_element(YOGO);
 
-	BUTTON_ENTER = new GuiElementButton(c, 100, 100, 64, 64, "textures/ship.png");
+	BUTTON_ENTER = new GuiElementButton(c, c->get_screen_width()/2 - (19 * 16), c->get_screen_height()/2 + 100, (19 * 32), 32, new TextResource("Click here to begin", 4));
 	GUI_MANAGER->add_gui_element(BUTTON_ENTER);
 
-	MusicManager music("music/chippy.ogg");
+	MusicManager music("music/chippy.wav");
 
 	r->add_module(GUI_MANAGER);
 	r->add_handler(SDL_MOUSEBUTTONDOWN, [&] (Reactor &r, SDL_Event e) {GUI_MANAGER->handler(r, e);});

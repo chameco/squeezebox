@@ -20,6 +20,7 @@ namespace squeezebox {
 
 			TextResource(string t, double s);
 			void draw(Context *c, int x, int y, int rotation=0);
+			void set_text(string t) { text = t; }
 		private:
 			string text;
 			double size;

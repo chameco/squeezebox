@@ -55,6 +55,10 @@ void Entity::take_damage(int d) {
 	}
 }
 
+void Entity::warp(int x, int y) {
+	body->SetTransform(b2Vec2(x/16.0f, y/16.0f), 0);
+}
+
 void Entity::impulse_x(int i) {
 	body->ApplyLinearImpulse(b2Vec2(i/16.0f, 0), body->GetWorldCenter(), true);
 }

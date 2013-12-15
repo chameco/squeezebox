@@ -28,6 +28,8 @@ namespace squeezebox {
 			virtual void destroy() { alive = false; }
 			bool is_alive() { return alive; }
 
+			void warp(int x, int y);
+
 			int get_x() { return body->GetPosition().x * 16; }
 			int get_y() { return body->GetPosition().y * 16; }
 			int get_w() { return w; }

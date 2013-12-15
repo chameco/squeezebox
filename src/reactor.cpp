@@ -35,7 +35,9 @@ void Reactor::add_handler(int type, function<void(Reactor &, SDL_Event)> cb) {
 }
 
 void Reactor::remove_handler(int type) {
-	handlers.erase(handlers.find(type));
+	if (handlers.find(type) != handlers.end()) {
+		handlers.erase(handlers.find(type));
+	}
 }
 
 static bool destroy_module_predicate(Module *m) {
