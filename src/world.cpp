@@ -4,12 +4,6 @@
 #include <vector>
 #include <fstream>
 
-#ifdef _WIN32
- #include <jsoncpp/json.h>
-#else
- #include <jsoncpp/json/json.h>
-#endif
-
 #include <Box2D/Box2D.h>
 
 #include "module.hpp"
@@ -22,7 +16,7 @@ World::World(Context *c, string path) {
 }
 
 void World::load_geometry(Context *c, string path) {
-	Json::Value root;
+	/*Json::Value root;
 	Json::Reader reader;
 	fstream input;
 	input.open(path);
@@ -45,7 +39,7 @@ void World::load_geometry(Context *c, string path) {
 			w.body->CreateFixture(&w.geometry, 0.0);
 			elements.push_back(w);
 		}
-	}
+	}*/
 }
 
 void World::draw(Context *c, int delta) {

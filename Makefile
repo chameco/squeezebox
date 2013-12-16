@@ -13,7 +13,7 @@ libdir = $(exec_prefix)/lib/
 CXXFLAGS = -Iinclude -std=c++11 -g -Wall -Werror
 
 all: src/main.o $(OBJECTS)
-	$(CXX) -std=c++11 -o squeezebox_exec -lm -ljsoncpp -lGLEW -lSDL2 -lGL -lGLU -lSDL2_image -lSDL2_mixer -lBox2D src/main.o $(OBJECTS)
+	$(CXX) -std=c++11 -Wl,-R . -o squeezebox_exec -lm -lGLEW -lSDL2 -lGL -lGLU -lSDL2_image -lSDL2_mixer -lBox2D src/main.o $(OBJECTS)
 shared: $(OBJECTS)
 	$(CXX) -std=c++11 -shared -Wl,-soname,libsqueezebox.so.1.0 -o libsqueezebox.so.1.0 -lm -ljsoncpp -lGLEW -lSDL2 -lGL -lGLU -lSDL2_image -lSDL2_mixer -lBox2D $(OBJECTS)
 install: all

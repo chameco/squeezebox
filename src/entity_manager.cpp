@@ -9,11 +9,11 @@
 #include <GL/glew.h>
 #include <Box2D/Box2D.h>
 
-#ifdef _WIN32
+/*#ifdef _WIN32
  #include <jsoncpp/json.h>
 #else
  #include <jsoncpp/json/json.h>
-#endif
+#endif*/
 
 #include "context.hpp"
 #include "module.hpp"
@@ -31,7 +31,7 @@ void EntityManager::load_entities(Context *c, string path) {
 }
 
 void EntityManager::load_entities(Context *c, function<Entity *(Context *, int, int, int, int, int, string)> alloc, string path) {
-	Json::Value root;
+	/*Json::Value root;
 	Json::Reader reader;
 	fstream input;
 	input.open(path);
@@ -52,7 +52,7 @@ void EntityManager::load_entities(Context *c, function<Entity *(Context *, int, 
 			e->get_body()->SetGravityScale(entities[index].get("gravity", 1).asDouble());
 			add_entity(e);
 		}
-	}
+	}*/
 }
 
 void EntityManager::reset_entities(Context *c) {

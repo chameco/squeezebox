@@ -534,6 +534,14 @@ void start_main_game() {
 	r->add_handler(SDL_KEYUP, main_key_handler);
 }
 
+class GuiElementQuit : public GuiElement {
+	public:
+		GuiElementQuit(Context *c, int x, int y, int w, int h, Resource *r) : GuiElement(c, x, y, w, h, r) {}
+		void on_left_click() {
+			exit(0);
+		}
+};
+
 void game_over() {
 	r->remove_module(ENTITY_MANAGER);
 	r->remove_module(SWITCHER);
@@ -543,9 +551,11 @@ void game_over() {
 	GAME_OVER = new GuiElement(c, c->get_screen_width()/2 - (9 * 32), c->get_screen_height()/2 - 32, 8, 8, new TextResource("Game Over", 8));
 	GUI_MANAGER->add_gui_element(GAME_OVER);
 
-	string waves = "You defeated " + to_string(WAVE) + " waves";
+	string waves = "You defeated " + to_string(WAVE) + " wave(s)";
 	WAVES_CLEARED = new GuiElement(c, c->get_screen_width()/2 - (waves.length() * 16), c->get_screen_height()/2 + 96, 8, 8, new TextResource(waves, 4));
 	GUI_MANAGER->add_gui_element(WAVES_CLEARED);
+
+	GUI_MANAGER->add_gui_element(new GuiElementQuit(c, c->get_screen_width()/2 - (18 * 16), c->get_screen_height()/2 + 140, (18 * 32), 32, new TextResource("Click here to quit", 4)));
 }
 
 class GuiElementButton : public GuiElement {
