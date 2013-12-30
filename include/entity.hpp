@@ -12,7 +12,7 @@
 using namespace std;
 
 namespace squeezebox {
-	class Entity  {
+	class Entity {
 		public:
 			Entity(int iw, int ih, int hp, Resource *r) : w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), alive(true), hp(hp), resource(r) {}
 			Entity(Context *c, int x, int y, int iw, int ih, int hp, Resource *r);

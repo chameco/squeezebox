@@ -1,4 +1,4 @@
-CXX = g++
+CXX = clang++
 OBJECTS = src/reactor.o src/resource.o src/image_resource.o src/text_resource.o src/color_resource.o src/music_manager.o src/aabb.o src/module.o src/context.o src/world.o src/entity.o src/projectile.o src/entity_manager.o src/gui_element.o src/gui_manager.o src/sound.o
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
@@ -13,7 +13,7 @@ libdir = $(exec_prefix)/lib/
 CXXFLAGS = -Iinclude -std=c++11 -g -Wall -Werror
 
 all: src/main.o $(OBJECTS)
-	$(CXX) -std=c++11 -Wl,-R . -o squeezebox_exec -lm -lGLEW -lSDL2 -lGL -lGLU -lSDL2_image -lSDL2_mixer -lBox2D src/main.o $(OBJECTS)
+	$(CXX) -std=c++11 -Wl,-R . -o squeezebox_exec -lm -lGLEW -lGL -lGLU -lSDL2_image -lSDL2_mixer -lSDL2 -lBox2D src/main.o $(OBJECTS)
 shared: $(OBJECTS)
 	$(CXX) -std=c++11 -shared -Wl,-soname,libsqueezebox.so.1.0 -o libsqueezebox.so.1.0 -lm -ljsoncpp -lGLEW -lSDL2 -lGL -lGLU -lSDL2_image -lSDL2_mixer -lBox2D $(OBJECTS)
 install: all

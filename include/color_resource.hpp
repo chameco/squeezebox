@@ -12,10 +12,10 @@ using namespace std;
 namespace squeezebox {
 	class ColorResource : public Resource {
 		public:
-			ColorResource(int w, int h, double r, double g, double b, double a);
+			ColorResource(int w, int h, double r, double g, double b);
 			void draw(Context *c, int x, int y, int rotation=0);
 		private:
-			double r, g, b, a;
+			double r, g, b;
 			Vertex vertices[4];
 			GLuint vertex_handler;
 	};

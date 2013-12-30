@@ -305,7 +305,7 @@ class ProjectileYellow : public Projectile {
 
 class ProjectileRed : public Projectile {
 	public:
-		ProjectileRed(Context *c, int x, int y, int xv, int yv) : Projectile(c, x + rand() % 8 - 4, y + rand() % 8 - 4, 8, 8, xv, yv, 1, new ColorResource(rand() % 16 + 8, rand() % 16 + 8, (float) (rand() % 100 + 50) / 100.0, 0.0, 0.0, 1.0)) {}
+		ProjectileRed(Context *c, int x, int y, int xv, int yv) : Projectile(c, x + rand() % 8 - 4, y + rand() % 8 - 4, 8, 8, xv, yv, 1, new ColorResource(rand() % 16 + 8, rand() % 16 + 8, (float) (rand() % 100 + 50) / 100.0, 0.0, 0.0)) {}
 		void collide() {
 			for (Entity *e : contacts) {
 				if (e != NULL) {

@@ -9,7 +9,7 @@
 using namespace squeezebox;
 using namespace std;
 
-ColorResource::ColorResource(int w, int h, double r, double g, double b, double a) : r(r), g(g), b(b), a(a) {
+ColorResource::ColorResource(int w, int h, double r, double g, double b) : r(r), g(g), b(b) {
 	vertices[0].x = 0;
 	vertices[0].y = 0;
 
