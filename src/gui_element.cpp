@@ -9,6 +9,10 @@
 using namespace squeezebox;
 using namespace std;
 
-void GuiElement::draw(Context *c, int delta) {
-	resource->draw(c, x, y);
+GuiElement::GuiElement(Context &c, int x, int y, int w, int h, Resource &r)
+	: AABB(x, y, w, h), resource(r), alive(true) {
+	}
+
+void GuiElement::draw(Context &c, int delta) {
+	resource.draw(c, x, y);
 }

@@ -1,0 +1,10 @@
+./usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25
+./usr/lib/x86_64-linux-gnu/sasl2/libsasldb.so.2.0.25
+./usr/lib/sasl2/berkeley_db.txt
+./usr/share/doc/libsasl2-2/README.configure-options
+./usr/share/doc/libsasl2-2/copyright
+./usr/share/doc/libsasl2-2/changelog.Debian.gz
+./usr/share/doc/libsasl2-2/README.Debian
+./usr/lib/x86_64-linux-gnu/libsasl2.so.2
+./usr/lib/x86_64-linux-gnu/sasl2/libsasldb.so
+./usr/lib/x86_64-linux-gnu/sasl2/libsasldb.so.2

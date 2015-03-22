@@ -2,17 +2,20 @@
 #define SQUEEZEBOX_CONTEXT_HPP
 
 #include <string>
+#include <memory>
 
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include <Box2D/Box2D.h>
 
-using namespace std;
+#include "vm.hpp"
 
 namespace squeezebox {
 	class Context {
+		private:
+			b2Vec2 gravity;
 		public:
-			Context(const string name, float g);
+			Context(const std::string name, float g);
 			~Context();
 
 			const GLuint get_standard_indices_handler() const { return standard_indices_handler; }
@@ -23,10 +26,11 @@ namespace squeezebox {
 			const int get_camera_y() const { return camera_y; }
 			void set_camera_y(int cy) { camera_y = cy; }
 			
-			b2World *get_world() const { return world; }
-
 			void update_physics(double delta);
 			void update_screen();
+
+			b2World world;
+			VM vm;
 		private:
 			GLuint standard_indices[4];
 			GLuint standard_indices_handler;
@@ -35,8 +39,6 @@ namespace squeezebox {
 			int screen_width, screen_height;
 			int camera_x;
 			int camera_y;
-			b2Vec2 gravity;
-			b2World *world;
 	};
 }
 

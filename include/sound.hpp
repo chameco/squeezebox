@@ -6,12 +6,10 @@
 
 #include <SDL2/SDL_mixer.h>
 
-using namespace std;
-
 namespace squeezebox {
 	class Sound {
 		public:
-			Sound(string path);
+			Sound(std::string path);
 
 			void play();
 			void loop();

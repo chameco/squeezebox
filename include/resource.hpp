@@ -19,7 +19,7 @@ namespace squeezebox {
 			virtual ~Resource() {}
 			static GLuint surface_to_texture(SDL_Surface *surface);
 
-			virtual void draw(Context *c, int x, int y, int rotation=0) =0;
+			virtual void draw(Context &c, int x, int y) =0;
 	};
 }
 

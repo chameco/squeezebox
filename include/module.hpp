@@ -3,15 +3,14 @@
 
 #include "context.hpp"
 
-using namespace std;
-
 namespace squeezebox {
 	class Module {
 		public:
 			Module() : alive(true) {}
 			virtual ~Module() {}
-			virtual void update(Context *c) =0;
-			virtual void draw(Context *c, int delta) =0;
+			virtual void update(Context &c) =0;
+			virtual void draw(Context &c, int delta) =0;
+			virtual void reset(Context &c) =0;
 			void destroy() { alive = false; }
 			bool is_alive() { return alive; }
 		private:

@@ -8,8 +8,6 @@
 
 #include "resource.hpp"
 
-using namespace std;
-
 namespace squeezebox {
 	class TextResource : public Resource {
 		public:
@@ -18,11 +16,12 @@ namespace squeezebox {
 			static Vertex glyph[4];
 			static GLuint glyph_handler;
 
-			TextResource(string t, double s);
-			void draw(Context *c, int x, int y, int rotation=0);
-			void set_text(string t) { text = t; }
+			TextResource(std::string t, double s);
+
+			void draw(Context &c, int x, int y);
+			void set_text(std::string t) { text = t; }
 		private:
-			string text;
+			std::string text;
 			double size;
 	};
 }

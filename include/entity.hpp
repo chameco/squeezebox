@@ -5,37 +5,32 @@
 #include <string>
 #include <list>
 
-#include "image_resource.hpp"
+#include "resource.hpp"
 #include "context.hpp"
-#include "sound.hpp"
-
-using namespace std;
 
 namespace squeezebox {
 	class Entity {
 		public:
-			Entity(int iw, int ih, int hp, Resource *r) : w(iw/32.0f), h(ih/32.0f), xv(0), yv(0), alive(true), hp(hp), resource(r) {}
-			Entity(Context *c, int x, int y, int iw, int ih, int hp, Resource *r);
-			virtual ~Entity();
+			Entity(Context &c, int x, int y, int iw, int ih, int hp, Resource &r);
 
 			virtual void collide() {}
 			virtual void update();
 
-			virtual void draw(Context *c, int delta);
+			virtual void draw(Context &c, int delta);
 
-			virtual void take_damage(int d);
+			virtual void take_damage(const int d);
 			
 			virtual void destroy() { alive = false; }
-			bool is_alive() { return alive; }
+			const bool is_alive() const { return alive; }
 
 			void warp(int x, int y);
 
-			int get_x() { return body->GetPosition().x * 16; }
-			int get_y() { return body->GetPosition().y * 16; }
-			int get_w() { return w; }
-			int get_h() { return h; }
-			int get_xv() { return xv; }
-			int get_yv() { return yv; }
+			const int get_x() const { return body->GetPosition().x * 16; }
+			const int get_y() const { return body->GetPosition().y * 16; }
+			const int get_w() const { return w; }
+			const int get_h() const { return h; }
+			const int get_xv() const { return xv; }
+			const int get_yv() const { return yv; }
 			b2Body *get_body() { return body; }
 
 			void impulse_x(int i);
@@ -51,12 +46,11 @@ namespace squeezebox {
 			float xv, yv;
 			bool alive;
 			int hp;
-			b2BodyDef body_def;
 			b2Body *body;
 			b2PolygonShape box;
 			b2FixtureDef fixture_def;
-			Resource *resource;
-			list<Entity *> contacts;
+			Resource &resource;
+			std::list<Entity *> contacts;
 	};
 }
 

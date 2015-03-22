@@ -11,21 +11,17 @@
 #include "context.hpp"
 #include "resource.hpp"
 
-using namespace std;
-
 namespace squeezebox {
 	class ImageResource : public Resource {
 		public:
-			static unordered_map<string, ImageResource *> cache;
+			ImageResource(std::string path);
 
-			ImageResource(string path);
 			~ImageResource();
 
-			void draw(Context *c, int x, int y, int rotation=0);
+			void draw(Context &c, int x, int y);
 		private:
 			void generate_vertices(int w, int h);
 			GLuint texture;
-			Vertex vertices[4];
 			GLuint vertex_handler;
 	};
 }

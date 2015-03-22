@@ -8,11 +8,13 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
+#include "vm.hpp"
+
 using namespace squeezebox;
 using namespace std;
 
-Context::Context(const string name, float g) : camera_x(0), camera_y(0), gravity(0.0f, g) {
-	world = new b2World(gravity);
+Context::Context(const string name, float g)
+	: gravity(0.0f, g), world(gravity), vm(), camera_x(0), camera_y(0) {
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		cerr << "Failed to initialize SDL" << endl;    
@@ -93,7 +95,7 @@ Context::~Context() {
 }
 
 void Context::update_physics(double delta) {
-	world->Step(delta, 8, 3);
+	world.Step(delta, 8, 3);
 }
 
 void Context::update_screen() {

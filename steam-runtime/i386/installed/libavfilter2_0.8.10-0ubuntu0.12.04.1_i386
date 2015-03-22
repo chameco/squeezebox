@@ -1,0 +1,9 @@
+./usr/lib/i386-linux-gnu/libavfilter.so.2.15.0
+./usr/lib/i386-linux-gnu/i686/cmov/libavfilter.so.2.15.0
+./usr/share/lintian/overrides/libavfilter2
+./usr/share/doc/libavfilter2/changelog.gz
+./usr/share/doc/libavfilter2/copyright
+./usr/share/doc/libavfilter2/changelog.Debian.gz
+./usr/share/doc/libavfilter2/README.Debian.gz
+./usr/lib/i386-linux-gnu/i686/cmov/libavfilter.so.2
+./usr/lib/i386-linux-gnu/libavfilter.so.2

@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include <functional>
+#include <memory>
 
 #include <Box2D/Box2D.h>
 
@@ -11,21 +12,16 @@
 #include "module.hpp"
 #include "entity.hpp"
 
-using namespace std;
-
 namespace squeezebox {
 	class EntityManager : public Module {
 		public:
-			EntityManager(Context *c);
+			EntityManager(Context &c);
 
-			void load_entities(Context *c, string path);
-			void load_entities(Context *c, function<Entity *(Context *, int, int, int, int, int, string)> alloc, string path);
-			void reset_entities(Context *c);
+			void update(Context &c);
+			void draw(Context &c, int delta);
+			void reset(Context &c);
 
-			void update(Context *c);
-			void draw(Context *c, int delta);
-
-			void add_entity(Entity *e);
+			void add_entity(Entity &e);
 		private:
 			class EntityContactListener : public b2ContactListener {
 				public:
@@ -45,7 +41,7 @@ namespace squeezebox {
 					void PostSolve(b2Contact *contact, const b2ContactImpulse *impulse) {}
 			};
 			EntityContactListener listener;
-			list<Entity *> all;
+			std::list<std::reference_wrapper<Entity>> all;
 	};
 }
 

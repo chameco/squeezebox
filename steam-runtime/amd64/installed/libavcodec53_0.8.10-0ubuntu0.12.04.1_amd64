@@ -1,0 +1,8 @@
+./usr/lib/x86_64-linux-gnu/libavcodec.so.53.35.0
+./usr/share/lintian/overrides/libavcodec53
+./usr/share/doc/libavcodec53/codecs.txt
+./usr/share/doc/libavcodec53/changelog.gz
+./usr/share/doc/libavcodec53/copyright
+./usr/share/doc/libavcodec53/changelog.Debian.gz
+./usr/share/doc/libavcodec53/README.Debian.gz
+./usr/lib/x86_64-linux-gnu/libavcodec.so.53

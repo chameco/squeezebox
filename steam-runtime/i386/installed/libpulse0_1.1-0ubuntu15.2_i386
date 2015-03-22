@@ -1,0 +1,9 @@
+./usr/lib/i386-linux-gnu/libpulsecommon-1.1.so
+./usr/lib/i386-linux-gnu/libpulse.so.0.13.5
+./usr/lib/i386-linux-gnu/libpulse-simple.so.0.0.3
+./usr/share/doc/libpulse0/README
+./usr/share/doc/libpulse0/copyright
+./usr/share/doc/libpulse0/changelog.Debian.gz
+./etc/pulse/client.conf
+./usr/lib/i386-linux-gnu/libpulse.so.0
+./usr/lib/i386-linux-gnu/libpulse-simple.so.0

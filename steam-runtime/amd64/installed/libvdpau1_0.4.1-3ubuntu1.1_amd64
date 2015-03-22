@@ -1,0 +1,7 @@
+./usr/lib/x86_64-linux-gnu/vdpau/libvdpau_trace.so.1.0.0
+./usr/lib/x86_64-linux-gnu/libvdpau.so.1.0.0
+./usr/share/doc/libvdpau1/copyright
+./usr/share/doc/libvdpau1/changelog.Debian.gz
+./etc/vdpau_wrapper.cfg
+./usr/lib/x86_64-linux-gnu/libvdpau.so.1
+./usr/lib/x86_64-linux-gnu/vdpau/libvdpau_trace.so.1

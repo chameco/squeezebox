@@ -6,12 +6,10 @@
 #include "context.hpp"
 #include "entity.hpp"
 
-using namespace std;
-
 namespace squeezebox {
 	class Projectile : public Entity {
 		public:
-			Projectile(Context *c, int x, int y, int iw, int ih, int xv, int yv, int strength, Resource *r);
+			Projectile(Context &c, int x, int y, int iw, int ih, int xv, int yv, int strength, Resource &r);
 
 			void update();
 			void collide();

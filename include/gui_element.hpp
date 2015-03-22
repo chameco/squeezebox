@@ -2,17 +2,17 @@
 #define SQUEEZEBOX_GUI_ELEMENT_HPP
 
 #include <string>
+#include <memory>
+#include <cstdio>
 
 #include "resource.hpp"
 #include "context.hpp"
 #include "aabb.hpp"
 
-using namespace std;
-
 namespace squeezebox {
 	class GuiElement : public AABB {
 		public:
-			GuiElement(Context *c, int x, int y, int w, int h, Resource *r) : AABB(x, y, w, h), resource(r), alive(true) {}
+			GuiElement(Context &c, int x, int y, int w, int h, Resource &r);
 
 			void destroy() { alive = false; }
 			bool is_alive() { return alive; }
@@ -20,11 +20,9 @@ namespace squeezebox {
 			virtual void on_left_click() {}
 			virtual void on_right_click() {}
 
-			Resource *get_resource() { return resource; }
-
-			void draw(Context *c, int delta);
+			void draw(Context &c, int delta);
 		private:
-			Resource *resource;
+			Resource &resource;
 			bool alive;
 	};
 }

@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "context.hpp"
+#include "graphics_pipeline.hpp"
 
 using namespace squeezebox;
 using namespace std;

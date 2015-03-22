@@ -1,41 +1,4 @@
-{
-	"entities" : [
-	{"x" : -256, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -224, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -192, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -160, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -128, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -96, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -64, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -32, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 0, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 32, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 64, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 96, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 128, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 160, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 192, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 224, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 256, "y" : -600, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	
-	{"x" : -256, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -224, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -192, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -160, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -128, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -96, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -64, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : -32, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 0, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 32, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 64, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 96, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 128, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 160, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 192, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 224, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-	{"x" : 256, "y" : -632, "w" : 32, "h" : 32, "hp" : 10, "gravity" : 0, "path" : "textures/enemy_x.png"},
-
-	{"x" : -16, "y" : -700, "w" : 32, "h" : 32, "hp" : 100, "gravity" : 0, "path" : "textures/enemy_goal.png"}
-	]
+geometry = {
+	{x = -64, y = 0, w = 32, h = 32, color = {r = 1.0, g = 1.0, b = 1.0}, texture = "textures/battery.png"},
+	{x = 96, y = 0, w = 32, h = 32, color = {r = 1.0, g = 0.0, b = 0.0}}
 }

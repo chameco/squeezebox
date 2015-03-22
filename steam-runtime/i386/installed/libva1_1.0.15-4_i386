@@ -1,0 +1,5 @@
+./usr/lib/i386-linux-gnu/dri/dummy_drv_video.so
+./usr/lib/i386-linux-gnu/libva.so.1.3200.0
+./usr/share/doc/libva1/copyright
+./usr/share/doc/libva1/changelog.Debian.gz
+./usr/lib/i386-linux-gnu/libva.so.1

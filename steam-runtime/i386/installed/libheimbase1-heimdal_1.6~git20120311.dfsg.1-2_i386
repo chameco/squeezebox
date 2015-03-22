@@ -1,0 +1,5 @@
+./usr/lib/i386-linux-gnu/libheimbase.so.1.0.0
+./usr/share/lintian/overrides/libheimbase1-heimdal
+./usr/share/doc/libheimbase1-heimdal/copyright
+./usr/share/doc/libheimbase1-heimdal/changelog.Debian.gz
+./usr/lib/i386-linux-gnu/libheimbase.so.1

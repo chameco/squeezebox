@@ -1,0 +1,4 @@
+./usr/lib/x86_64-linux-gnu/libCgGL.so
+./usr/lib/x86_64-linux-gnu/libCg.so
+./usr/share/doc/libcg/copyright
+./usr/share/doc/libcg/changelog.Debian.gz

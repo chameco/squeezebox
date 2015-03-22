@@ -139,7 +139,7 @@ static int bitmap_index(char c)
 	return 51;
 }
 
-void TextResource::draw(Context *c, int x, int y, int rotation) {
+void TextResource::draw(Context &c, int x, int y) {
 	int len = text.length();
 	int bmpx = 0; int bmpy = 0;
 	int curx = x; int cury = y;
@@ -158,6 +158,7 @@ void TextResource::draw(Context *c, int x, int y, int rotation) {
 
 			glTranslatef(curx, cury, 0.0);
 			glScalef(size, size, 1.0);
+
 			glColor3f(1.0, 1.0, 1.0);
 			glBindTexture(GL_TEXTURE_2D, bitmap_font[bmpy][bmpx]);
 
@@ -168,7 +169,7 @@ void TextResource::draw(Context *c, int x, int y, int rotation) {
 			glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (GLvoid*)(sizeof(GLfloat)*2));
 			glVertexPointer(2, GL_FLOAT, sizeof(Vertex), (GLvoid*)0);
 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, c->get_standard_indices_handler());
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, c.get_standard_indices_handler());
 			glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, NULL);
 
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
