@@ -5,3 +5,4 @@ session.vim
 *.dll
 *.exe
 squeezebox_exec
+steam-runtime/*
